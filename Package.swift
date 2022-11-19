@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "mmpub.MVVM",
+    name: "MVVM",
     platforms: [
         .macOS(.v12), .iOS(.v15), .tvOS(.v15), .watchOS(.v8)
     ],
