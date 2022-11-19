@@ -35,7 +35,7 @@ open class SingleInstanceRoot {
 /// are explicit in the code and few lines of code should have access to the object, reducing
 /// potential down-the-line technical debt when original coders are replaced, and also providing
 /// a clean state for each test case, since the Singleton's typically do not deinitialize.
-public class SingleInstance: SingleInstanceRoot {
+open class SingleInstance: SingleInstanceRoot {
     override required init?() {
         super.init()
     }
