@@ -2,7 +2,7 @@
 
 /// The only reason to split root of `SingleInstance` out is so subclasses will not have to use
 /// the `override` keyword when declaring their failable initializer.
-public class SingleInstanceRoot {
+open class SingleInstanceRoot {
     fileprivate struct WeakValue {
         weak var value: AnyObject?
     }
