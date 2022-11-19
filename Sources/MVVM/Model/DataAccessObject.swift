@@ -3,6 +3,8 @@ import Foundation
 
 public protocol MVVMDataAccessObject {
     func getDataStream() -> AsyncStream<Data>
+    func onReceive(data: Data)
+    func onDeinit(callback: () -> Void)
 }
 
 extension MVVMDataAccessObject {
