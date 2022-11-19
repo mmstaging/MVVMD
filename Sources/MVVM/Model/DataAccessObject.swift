@@ -4,7 +4,6 @@ import Foundation
 public protocol MVVMDataAccessObject: AnyObject {
     func getDataStream() -> AsyncStream<Data>
     func onReceive(data: Data)
-    func onDeinit(callback: @escaping () -> Void)
 }
 
 extension MVVMDataAccessObject {
