@@ -36,7 +36,7 @@ open class SingleInstanceRoot {
 /// potential down-the-line technical debt when original coders are replaced, and also providing
 /// a clean state for each test case, since the Singleton's typically do not deinitialize.
 open class SingleInstance: SingleInstanceRoot {
-    open override required init?() {
+    public override required init?() {
         super.init()
     }
 }
