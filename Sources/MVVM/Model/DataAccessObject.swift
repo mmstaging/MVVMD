@@ -6,7 +6,7 @@ public protocol DataAccessObject {
 }
 
 extension DataAccessObject {
-    func getObjStream<T:Decodable>() -> AsyncMapSequence<AsyncStream<Data>, T> {
+    public func getObjStream<T:Decodable>() -> AsyncMapSequence<AsyncStream<Data>, T> {
         getDataStream().map({try! JSONDecoder().decode(T.self, from: $0)})
     }
 }
