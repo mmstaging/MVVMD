@@ -2,15 +2,15 @@
 
 import Foundation
 
-public class MVVMDataManager: SingleInstance {
+open class MVVMDataManager: SingleInstance {
     // responsibilities: create DAO, manage datasources.
     private var dataSources = [MVVMDataSource]()
 
     public required init?() {
     }
 
-    public func add(dataSource: MVVMDataSource) {
-        dataSources.append(dataSource)
+    public init?(dataSources: [MVVMDataSource]) {
+        self.dataSources = dataSources
     }
 
     public func createDataAccessObject(id: String) -> MVVMDataAccessObject? {
