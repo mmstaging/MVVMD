@@ -1,7 +1,7 @@
-// DataSourceState
+// MVVMDataSourceState
 
 /// Every Data Source will manage and report this state
-public enum DataSourceState {
+public enum MVVMDataSourceState {
     /// No OS resources are allocated for the data source.
     case uninitialized
     /// Data source is connecting to OS-system resources.

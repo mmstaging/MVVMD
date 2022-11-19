@@ -3,7 +3,7 @@
 import Foundation
 import Combine
 
-public protocol DataSource: SingleInstance {
+public protocol MVVMDataSource: SingleInstance {
     var dataSourceID : String { get }
-    func createDataAccessObject(id: String) -> DataAccessObject?
+    func createDataAccessObject(id: String) -> MVVMDataAccessObject?
 }

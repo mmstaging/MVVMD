@@ -2,7 +2,7 @@
 
 import Foundation
 
-public class DataManager: SingleInstance {
+public class MVVMDataManager: SingleInstance {
     // responsibilities: create DAO, manage datasources.
     private var dataSources = [DataSource]()
 
