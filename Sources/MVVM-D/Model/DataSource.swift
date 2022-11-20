@@ -2,7 +2,7 @@
 
 import Foundation
 import Combine
-import SingleInstance
+//import SingleInstance
 
 
 public protocol MVVMD_DataSource: SingleInstance {

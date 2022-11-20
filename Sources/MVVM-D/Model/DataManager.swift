@@ -2,7 +2,7 @@
 
 import os
 import Foundation
-import SingleInstance
+//import SingleInstance
 
 open class MVVMD_DataManager: SingleInstance {
     // responsibilities: create DAO, manage datasources, manage middleware hooks
