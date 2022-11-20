@@ -40,3 +40,26 @@ open class SingleInstance: SingleInstanceRoot {
         super.init()
     }
 }
+
+
+import Foundation
+
+open class NSSingleInstance: NSObject {
+    fileprivate struct WeakValue {
+        weak var value: AnyObject?
+    }
+
+    static fileprivate var instance = [String: WeakValue]()
+
+    private var key: String {"\(type(of: self))"}
+
+    fileprivate override init() {
+        super.init()
+        guard NSSingleInstance.instance[key] == nil else { fatalError("FATAL: NSSingleInstance multiple instantiation. Self=\(self)") }
+        NSSingleInstance.instance[key] = WeakValue(value: self)
+    }
+
+    deinit {
+        NSSingleInstance.instance[key] = nil
+    }
+}
