@@ -53,10 +53,14 @@ open class NSSingleInstance: NSObject {
 
     private var key: String {"\(type(of: self))"}
 
-    public override init() {
+    private override init() {
         super.init()
         guard NSSingleInstance.instance[key] == nil else { fatalError("FATAL: NSSingleInstance multiple instantiation. Self=\(self)") }
         NSSingleInstance.instance[key] = WeakValue(value: self)
+    }
+
+    public convenience init?(_ : Void) {
+        self.init()
     }
 
     deinit {
