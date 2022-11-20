@@ -1,6 +1,7 @@
 // DataManager
 
 import Foundation
+import SingleInstance
 
 open class MVVMDataManager: SingleInstance {
     // responsibilities: create DAO, manage datasources.
