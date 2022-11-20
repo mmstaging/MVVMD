@@ -1,5 +1,5 @@
 import XCTest
-@testable import MVVM
+@testable import MVVM_D
 
 final class MVVMTests: XCTestCase {
     func testExample() throws {
