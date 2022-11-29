@@ -8,7 +8,7 @@ open class MVVMD_DataManager: SingleInstance {
     // responsibilities: create DAO, manage datasources, manage middleware hooks
     private var dataSources = [String: MVVMD_DataSource]()
 
-    public required init?() {
+    public override required init?() {
         guard !(type(of: self) === MVVMD_DataManager.self)
         else {
             os_log("ERROR: Do not create direct instances of MVVMD_DataManager class, instantiate subclasses instead.")
