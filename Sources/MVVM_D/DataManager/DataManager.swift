@@ -18,7 +18,7 @@ open class MVVMD_DataManager: SingleInstance, DataManagerType {
         }
     }
 
-    public required init?(dataSources: [MVVMD_DataSource.Type]) {
+    public init?(dataSources: [MVVMD_DataSource.Type]) {
         guard !(type(of: self) === MVVMD_DataManager.self)
         else {
             os_log("ERROR: Do not create direct instances of MVVMD_DataManager class, instantiate subclasses instead.")
