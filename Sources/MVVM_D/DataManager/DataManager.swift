@@ -4,8 +4,6 @@ import os
 import Foundation
 import SingleInstance
 
-public protocol MVVMD_DataManagerSubclass: MVVMD_DataManager {}
-
 open class MVVMD_DataManager: SingleInstance {
     // responsibilities: create DAO, manage datasources, manage middleware hooks
     private var dataSources = [String: MVVMD_DataSource]()
