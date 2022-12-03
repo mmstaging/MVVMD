@@ -4,7 +4,7 @@ import os
 import Foundation
 import SingleInstance
 
-public protocol DataManagerClass: AnyObject {
+public protocol DataManagerClass: SingleInstance {
     init?(dataSources: [MVVMD_DataSource.Type])
     func createDataAccessObject(id: String, params:[String:String]) -> MVVMD_DataAccessObject?
 }
