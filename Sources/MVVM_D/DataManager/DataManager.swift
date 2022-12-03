@@ -4,6 +4,11 @@ import os
 import Foundation
 import SingleInstance
 
+public protocol DataManagerClass: AnyObject {
+    init?(dataSources: [MVVMD_DataSource.Type])
+    func createDataAccessObject(id: String, params:[String:String]) -> MVVMD_DataAccessObject?
+}
+
 open class MVVMD_DataManager: SingleInstance {
     // responsibilities: create DAO, manage datasources, manage middleware hooks
     private var dataSources = [String: MVVMD_DataSource]()
