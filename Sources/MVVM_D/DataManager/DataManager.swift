@@ -4,7 +4,7 @@ import os
 import Foundation
 import SingleInstance
 
-public protocol DataManagerType {}
+public protocol DataManagerType: SingleInstance {}
 
 open class MVVMD_DataManager: SingleInstance, DataManagerType {
     // responsibilities: create DAO, manage datasources, manage middleware hooks
