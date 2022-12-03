@@ -9,7 +9,7 @@ public protocol DataManagerClass: SingleInstance {
     func createDataAccessObject(id: String, params:[String:String]) -> MVVMD_DataAccessObject?
 }
 
-open class MVVMD_DataManager: SingleInstance {
+open class MVVMD_DataManager: SingleInstance, DataManagerClass {
     // responsibilities: create DAO, manage datasources, manage middleware hooks
     private var dataSources = [String: MVVMD_DataSource]()
 
@@ -21,7 +21,7 @@ open class MVVMD_DataManager: SingleInstance {
         }
     }
 
-    public init?(dataSources: [MVVMD_DataSource.Type]) {
+    public required init?(dataSources: [MVVMD_DataSource.Type]) {
         guard !(type(of: self) === MVVMD_DataManager.self)
         else {
             os_log("ERROR: Do not create direct instances of MVVMD_DataManager class, instantiate subclasses instead.")
@@ -46,9 +46,9 @@ open class MVVMD_DataManager: SingleInstance {
 
     public func createDataAccessObject(id: String, params:[String:String]=[:]) -> MVVMD_DataAccessObject? {
         let components = id.split(separator: ".").map(String.init)
-        guard components.count == 2
+        guard components.count > 1
         else {
-            os_log("ERROR: createDataAccessObject `id` requires two dot-separated components (\"datasource.service\"), got \"\(id)\"")
+            os_log("ERROR: createDataAccessObject `id` requires at least two dot-separated components (\"datasource.service\"), got \"\(id)\"")
             return nil
         }
         guard let dataSource = dataSources[components[0]] else { return nil }
