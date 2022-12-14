@@ -9,7 +9,7 @@ open class MVVMD_DataManager: SingleInstance {
     private var dataSources = [String: MVVMD_DataSource]()
 
     public required init?() {
-        guard !(type(of: self) === MVVMD_DataManager.self)
+        guard type(of: self) !== MVVMD_DataManager.self
         else {
             os_log("ERROR: Do not create direct instances of MVVMD_DataManager class, instantiate subclasses instead.")
             return nil
@@ -17,7 +17,7 @@ open class MVVMD_DataManager: SingleInstance {
     }
 
     public init?(dataSources: [MVVMD_DataSource.Type]) {
-        guard !(type(of: self) === MVVMD_DataManager.self)
+        guard type(of: self) !== MVVMD_DataManager.self
         else {
             os_log("ERROR: Do not create direct instances of MVVMD_DataManager class, instantiate subclasses instead.")
             return nil
