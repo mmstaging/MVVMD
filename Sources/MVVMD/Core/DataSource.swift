@@ -3,7 +3,8 @@
 import Foundation
 import SingleInstance
 
-public protocol DataSource: SingleInstance, AnyObject {
+public protocol DataSource: AnyObject {
+    init?()
     var state: DataSourceState { get }
     var dataSourceID : String { get }
     var params: [String:String] { get }

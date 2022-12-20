@@ -54,7 +54,7 @@ open class DataManager: SingleInstance {
     }
 
     fileprivate struct ObjectWrapper {
-        unowned var object: AnyObject
+         var object: AnyObject
     }
 
     public func injectDataSource<T>(_ t: T.Type) throws -> T {
