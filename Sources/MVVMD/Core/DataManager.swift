@@ -53,7 +53,7 @@ open class DataManager: SingleInstance {
         unowned var object: AnyObject
     }
 
-    public func injectDataSource<T:DataSource>(_ t:T, injectionCallback: (T) -> ()) throws {
+    public func injectDataSource<T:DataSource>(_ t:T.Type, injectionCallback: (T) -> ()) throws {
         var id = ""
         for (key, value) in dataSourceTypes where value == type(of: t) {
             id = key
