@@ -1,7 +1,7 @@
 import XCTest
-@testable import MVVM_D
+@testable import MVVMD
 
-final class MVVMTests: XCTestCase {
+final class MVVMDTests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct

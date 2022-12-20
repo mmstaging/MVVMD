@@ -1,6 +1,6 @@
 // DataManager
 
-import os
+import os.log
 import Foundation
 import SingleInstance
 
