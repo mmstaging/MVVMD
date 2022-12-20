@@ -4,28 +4,28 @@ import os.log
 import Foundation
 import SingleInstance
 
-open class MVVMD_DataManager: SingleInstance {
+open class DataManager: SingleInstance {
     // responsibilities: create DAO, manage datasources, manage middleware hooks
-    private var dataSources = [String: MVVMD_DataSource]()
+    private var dataSources = [String: DataSource]()
 
     public required init?() {
-        guard type(of: self) !== MVVMD_DataManager.self
+        guard type(of: self) !== DataManager.self
         else {
-            os_log("ERROR: Do not create direct instances of MVVMD_DataManager class, instantiate subclasses instead.")
+            os_log("ERROR: Do not create direct instances of DataManager class, instantiate subclasses instead.")
             return nil
         }
     }
 
-    public init?(dataSources: [MVVMD_DataSource.Type]) {
-        guard type(of: self) !== MVVMD_DataManager.self
+    public init?(dataSources: [DataSource.Type]) {
+        guard type(of: self) !== DataManager.self
         else {
-            os_log("ERROR: Do not create direct instances of MVVMD_DataManager class, instantiate subclasses instead.")
+            os_log("ERROR: Do not create direct instances of DataManager class, instantiate subclasses instead.")
             return nil
         }
 
         guard !dataSources.isEmpty
         else {
-            os_log("ERROR: MVVMD_DataManager cannot initialize without data sources")
+            os_log("ERROR: DataManager cannot initialize without data sources")
             return nil
         }
 
@@ -39,7 +39,7 @@ open class MVVMD_DataManager: SingleInstance {
         }
     }
 
-    public func createDataAccessObject(id: String, params:[String:String]=[:]) -> MVVMD_DataAccessObject? {
+    public func createDataAccessObject(id: String, params:[String:String]=[:]) -> DataAccessObject? {
         let components = id.split(separator: ".").map(String.init)
         guard components.count > 1
         else {
