@@ -11,7 +11,7 @@ public enum DataManagerError: Error {
 }
 
 private struct UnownedDataSource {
-    unowned var dataSource: DataSource
+    var dataSource: DataSource
 }
 
 open class DataManager: SingleInstance {
