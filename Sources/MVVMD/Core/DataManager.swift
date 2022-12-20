@@ -82,7 +82,10 @@ open class DataManager: SingleInstance {
 //            } catch {
 //            }
 //        }
-        return dataSources[id]! as! T
+        print("before, \(id) \(dataSources[id]!)")
+        let result = dataSources[id]! as? T
+        print("after \(result)")
+        return result!
     }
 
     public func createDataAccessObject(id: String, params:[String:String]=[:]) -> DataAccessObject? {
