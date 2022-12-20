@@ -13,13 +13,11 @@ public enum DataManagerError: Error {
 open class DataManager: SingleInstance {
     // responsibilities: create DAO, manage datasources, manage middleware hooks
     private var dataSources = [String: DataSource]()
+    private var dataSourceTypes = [String: DataSource.Type]()
 
+    @available(*, obsoleted:0.0, message:"Use init?(dataSources:) instead.")
     public required init?() {
-        guard type(of: self) !== DataManager.self
-        else {
-            os_log("ERROR: Do not create direct instances of DataManager class, instantiate subclasses instead.")
-            return nil
-        }
+        return nil
     }
 
     public init?(dataSources: [DataSource.Type]) {
@@ -43,6 +41,7 @@ open class DataManager: SingleInstance {
                     return nil
                 }
                 self.dataSources[instantiatedDataSource.dataSourceID] = instantiatedDataSource
+                self.dataSourceTypes[instantiatedDataSource.dataSourceID] = dataSource
             } else {
                 os_log("ERROR: Couldn't instantiate SingleInstance data source \(dataSource). DataManager not initialized.")
                 return nil
@@ -50,9 +49,15 @@ open class DataManager: SingleInstance {
         }
     }
 
-    public func injectDataSource(id: String, injectionCallback: (DataSource) -> ()) throws {
-        struct ObjectWrapper {
-            unowned var object: AnyObject
+    fileprivate struct ObjectWrapper {
+        unowned var object: AnyObject
+    }
+
+    public func injectDataSource<T:DataSource>(_ t:T, injectionCallback: (T) -> ()) throws {
+        var id = ""
+        for (key, value) in dataSourceTypes where value == type(of: t) {
+            id = key
+            break
         }
         guard dataSources[id] != nil
         else {
@@ -66,7 +71,7 @@ open class DataManager: SingleInstance {
             throw DataManagerError.dataSourceNotUniquelyInstaced(id)
         }
 
-        injectionCallback(dataSources[id]!)
+        injectionCallback(dataSources[id]! as! T)
 
         // post-flight check to ensure single instance was not strongly retained during injection
         guard isKnownUniquelyReferenced(&wrapper.object)
