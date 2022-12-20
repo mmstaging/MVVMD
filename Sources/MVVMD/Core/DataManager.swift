@@ -53,7 +53,7 @@ open class DataManager: SingleInstance {
         unowned var object: AnyObject
     }
 
-    public func injectDataSource<T:DataSource>(_ t:T.Type, injectionCallback: (T) -> ()) throws {
+    public func injectDataSource<T:DataSource>(_ t:inout T) throws {
         var id = ""
         for (key, value) in dataSourceTypes where value == type(of: t) {
             id = key
@@ -71,7 +71,7 @@ open class DataManager: SingleInstance {
             throw DataManagerError.dataSourceNotUniquelyInstaced(id)
         }
 
-        injectionCallback(dataSources[id]! as! T)
+        t = dataSources[id]! as! T
 
         // post-flight check to ensure single instance was not strongly retained during injection
         guard isKnownUniquelyReferenced(&wrapper.object)
