@@ -53,7 +53,7 @@ open class DataManager: SingleInstance {
         unowned var object: AnyObject
     }
 
-    public func injectDataSource<T:DataSource>(_ t:inout T) throws {
+    public func injectDataSource<T:DataSource>(_ t: T.Type) throws -> T {
         var id = ""
         for (key, value) in dataSourceTypes where value == type(of: t) {
             id = key
@@ -71,13 +71,18 @@ open class DataManager: SingleInstance {
             throw DataManagerError.dataSourceNotUniquelyInstaced(id)
         }
 
-        t = dataSources[id]! as! T
-
-        // post-flight check to ensure single instance was not strongly retained during injection
-        guard isKnownUniquelyReferenced(&wrapper.object)
-        else {
-            throw DataManagerError.dataSourceReferenceNotStoredInUnownedProperty(id)
-        }
+//        Task.detached {
+//            do {
+//                try await Task.sleep(nanoseconds: 1 * 1_000_000)
+//                // post-flight check to ensure single instance was not strongly retained during injection
+//                guard isKnownUniquelyReferenced(&wrapper.object)
+//                else {
+//                    fatalError("SingleInstance object multiply referenced \(id))")
+//                }
+//            } catch {
+//            }
+//        }
+        return dataSources[id]! as! T
     }
 
     public func createDataAccessObject(id: String, params:[String:String]=[:]) -> DataAccessObject? {
