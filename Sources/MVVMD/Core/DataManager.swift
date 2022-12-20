@@ -10,9 +10,13 @@ public enum DataManagerError: Error {
     case dataSourceReferenceNotStoredInUnownedProperty(String)
 }
 
+private struct UnownedDataSource {
+    unowned var dataSource: DataSource
+}
+
 open class DataManager: SingleInstance {
     // responsibilities: create DAO, manage datasources, manage middleware hooks
-    private var dataSources = [String: DataSource]()
+    private var dataSources = [String: UnownedDataSource]()
     private var dataSourceTypes = [String: DataSource.Type]()
 
     @available(*, obsoleted:0.0, message:"Use init?(dataSources:) instead.")
@@ -40,7 +44,7 @@ open class DataManager: SingleInstance {
                     os_log("ERROR: Non-unique data source detected \(instantiatedDataSource.dataSourceID). DataManager not initialized.")
                     return nil
                 }
-                self.dataSources[instantiatedDataSource.dataSourceID] = instantiatedDataSource
+                self.dataSources[instantiatedDataSource.dataSourceID] = UnownedDataSource(dataSource: instantiatedDataSource)
                 self.dataSourceTypes[instantiatedDataSource.dataSourceID] = dataSource
             } else {
                 os_log("ERROR: Couldn't instantiate SingleInstance data source \(dataSource). DataManager not initialized.")
@@ -63,7 +67,7 @@ open class DataManager: SingleInstance {
         else {
             throw DataManagerError.dataSourceNotFound(id)
         }
-        var wrapper = ObjectWrapper(object: dataSources[id]!)
+        var wrapper = ObjectWrapper(object: dataSources[id]!.dataSource)
 
         // pre-flight check to ensure single instances are uniquely referenced
         guard isKnownUniquelyReferenced(&wrapper.object)
@@ -95,7 +99,7 @@ open class DataManager: SingleInstance {
             os_log("ERROR: createDataAccessObject `id` requires at least two dot-separated components (\"datasource.service\"), got \"\(id)\"")
             return nil
         }
-        guard let dataSource = dataSources[components[0]] else { return nil }
+        guard let dataSource = dataSources[components[0]]?.dataSource else { return nil }
         return dataSource.createDataAccessObject(id: components[1], params: params)
     }
 }
