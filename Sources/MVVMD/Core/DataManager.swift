@@ -4,6 +4,12 @@ import os.log
 import Foundation
 import SingleInstance
 
+public enum DataManagerError: Error {
+    case dataSourceNotFound(String)
+    case dataSourceNotUniquelyInstaced(String)
+    case dataSourceReferenceNotStoredInUnownedProperty(String)
+}
+
 open class DataManager: SingleInstance {
     // responsibilities: create DAO, manage datasources, manage middleware hooks
     private var dataSources = [String: DataSource]()
@@ -31,11 +37,41 @@ open class DataManager: SingleInstance {
 
         for dataSource in dataSources {
             if let instantiatedDataSource = dataSource.init() {
+                guard self.dataSources[instantiatedDataSource.dataSourceID] == nil
+                else {
+                    os_log("ERROR: Non-unique data source detected \(instantiatedDataSource.dataSourceID). DataManager not initialized.")
+                    return nil
+                }
                 self.dataSources[instantiatedDataSource.dataSourceID] = instantiatedDataSource
             } else {
                 os_log("ERROR: Couldn't instantiate SingleInstance data source \(dataSource). DataManager not initialized.")
                 return nil
             }
+        }
+    }
+
+    public func injectDataSource(id: String, injectionCallback: (DataSource) -> ()) throws {
+        struct ObjectWrapper {
+            unowned var object: AnyObject
+        }
+        guard dataSources[id] != nil
+        else {
+            throw DataManagerError.dataSourceNotFound(id)
+        }
+        var wrapper = ObjectWrapper(object: dataSources[id]!)
+
+        // pre-flight check to ensure single instances are uniquely referenced
+        guard isKnownUniquelyReferenced(&wrapper.object)
+        else {
+            throw DataManagerError.dataSourceNotUniquelyInstaced(id)
+        }
+
+        injectionCallback(dataSources[id]!)
+
+        // post-flight check to ensure single instance was not strongly retained during injection
+        guard isKnownUniquelyReferenced(&wrapper.object)
+        else {
+            throw DataManagerError.dataSourceReferenceNotStoredInUnownedProperty(id)
         }
     }
 
