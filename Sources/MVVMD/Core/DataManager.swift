@@ -55,7 +55,7 @@ open class DataManager: SingleInstance {
 
     public func injectDataSource<T>(_ t: T.Type) throws -> T {
         var id = ""
-        for (key, value) in dataSourceTypes where value == type(of: t) {
+        for (key, value) in dataSourceTypes where value == t {
             id = key
             break
         }
